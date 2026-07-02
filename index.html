@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProQuick — Websites that ship fast. Built to grow.</title>
+<meta name="description" content="ProQuick builds fast, modern websites for small businesses — and is rolling out AI chatbots next. Book a free consult.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0A0E1A;
+    --bg-soft: #0E1422;
+    --panel: #121929;
+    --line: #232C42;
+    --text: #E8ECF6;
+    --text-dim: #8B93AC;
+    --cyan: #5DE0E6;
+    --violet: #8B7CF6;
+    --amber: #FFB454;
+    --grad: linear-gradient(120deg, var(--cyan), var(--violet));
+    --radius: 14px;
+    --maxw: 1180px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Space Grotesk', sans-serif;
+    letter-spacing:-0.02em;
+    margin:0;
+  }
+  .mono{
+    font-family:'JetBrains Mono', monospace;
+    letter-spacing:0.02em;
+  }
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 28px;}
+  img,svg{display:block;}
+
+  /* button resets — so styled buttons look like links */
+  button{ font-family:inherit; cursor:pointer; }
+  .navlinks button:hover{ color:var(--text) !important; }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--cyan);
+    outline-offset:3px;
+    border-radius:6px;
+  }
+
+  /* background ambience */
+  .bg-glow{
+    position:fixed; inset:0; z-index:-1; overflow:hidden; pointer-events:none;
+  }
+  .bg-glow::before{
+    content:"";
+    position:absolute; top:-20%; left:50%; transform:translateX(-50%);
+    width:1200px; height:900px;
+    background: radial-gradient(circle at 50% 30%, rgba(93,224,230,0.10), transparent 60%),
+                radial-gradient(circle at 70% 60%, rgba(139,124,246,0.10), transparent 55%);
+  }
+  .grid-lines{
+    position:absolute; inset:0;
+    background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                       linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7) 10%, rgba(0,0,0,0.7) 70%, transparent);
+  }
+
+  /* nav */
+  header{
+    position:sticky; top:0; z-index:50;
+    backdrop-filter: blur(10px);
+    background: rgba(10,14,26,0.7);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 28px; max-width:var(--maxw); margin:0 auto;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Space Grotesk', sans-serif; font-weight:700; font-size:1.25rem;
+  }
+  .logo-mark{
+    width:30px; height:30px; border-radius:8px;
+    background:var(--grad);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono', monospace; font-weight:700; color:#0A0E1A; font-size:0.85rem;
+  }
+  .navlinks{display:flex; gap:32px; font-size:0.95rem; color:var(--text-dim);}
+  .navlinks a:hover{color:var(--text);}
+  .nav-cta{
+    padding:10px 20px; border-radius:999px;
+    background:var(--text); color:var(--bg);
+    font-weight:600; font-size:0.9rem;
+    transition:transform .15s ease, box-shadow .15s ease;
+    white-space:nowrap;
+  }
+  .nav-cta:hover{transform:translateY(-1px); box-shadow:0 8px 24px rgba(93,224,230,0.18);}
+  .navlinks-mobile{display:none;}
+
+  /* hero */
+  .hero{
+    padding:90px 0 70px;
+    display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:'JetBrains Mono', monospace; font-size:0.78rem; color:var(--cyan);
+    border:1px solid rgba(93,224,230,0.3); background:rgba(93,224,230,0.06);
+    padding:6px 12px; border-radius:999px; margin-bottom:22px;
+  }
+  .eyebrow .dot{width:6px; height:6px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan);}
+  .hero h1{
+    font-size:clamp(2.4rem, 4.4vw, 3.6rem);
+    font-weight:700; line-height:1.08;
+  }
+  .hero h1 .gradient-text{
+    background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero p.sub{
+    margin-top:22px; font-size:1.1rem; color:var(--text-dim); max-width:480px;
+  }
+  .hero-ctas{display:flex; gap:16px; margin-top:34px; flex-wrap:wrap;}
+  .btn-primary{
+    padding:14px 28px; border-radius:10px;
+    background:var(--grad); color:#06090F; font-weight:600; font-size:0.98rem;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 10px 30px rgba(139,124,246,0.28);}
+  .btn-secondary{
+    padding:14px 28px; border-radius:10px; border:1px solid var(--line);
+    color:var(--text); font-weight:600; font-size:0.98rem;
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .btn-secondary:hover{border-color:var(--cyan); background:rgba(93,224,230,0.05);}
+  .hero-meta{
+    display:flex; gap:28px; margin-top:40px; flex-wrap:wrap;
+  }
+  .hero-meta div{font-size:0.85rem; color:var(--text-dim);}
+  .hero-meta strong{display:block; font-family:'Space Grotesk',sans-serif; font-size:1.4rem; color:var(--text); font-weight:700;}
+
+  /* terminal signature element */
+  .terminal{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    overflow:hidden; box-shadow:0 30px 80px -20px rgba(0,0,0,0.6);
+  }
+  .term-bar{
+    display:flex; align-items:center; gap:8px;
+    padding:12px 16px; border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  }
+  .term-dot{width:10px; height:10px; border-radius:50%;}
+  .term-bar .term-dot:nth-child(1){background:#FF5F57;}
+  .term-bar .term-dot:nth-child(2){background:#FEBC2E;}
+  .term-bar .term-dot:nth-child(3){background:#28C840;}
+  .term-title{margin-left:8px; font-size:0.78rem; color:var(--text-dim); font-family:'JetBrains Mono',monospace;}
+  .term-body{padding:22px 22px 26px; min-height:230px; font-family:'JetBrains Mono', monospace; font-size:0.86rem;}
+  .term-line{color:var(--text-dim); margin-bottom:8px; min-height:1.4em;}
+  .term-line .kw{color:var(--violet);}
+  .term-line .str{color:var(--amber);}
+  .term-line .fn{color:var(--cyan);}
+  .caret{display:inline-block; width:7px; height:14px; background:var(--cyan); vertical-align:middle; animation:blink 1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  .render-frame{
+    margin-top:14px; border-radius:10px; border:1px solid var(--line);
+    background:#0D1320; padding:16px; opacity:0; transform:translateY(8px);
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .render-frame.show{opacity:1; transform:translateY(0);}
+  .render-frame .rf-top{display:flex; gap:6px; margin-bottom:10px;}
+  .render-frame .rf-top span{width:36px; height:6px; border-radius:3px; background:var(--line);}
+  .render-frame .rf-hero{height:34px; border-radius:6px; background:var(--grad); opacity:0.85; margin-bottom:8px; width:70%;}
+  .render-frame .rf-row{height:8px; border-radius:4px; background:var(--line); margin-bottom:6px;}
+  .render-frame .rf-row:nth-child(3){width:90%;}
+  .render-frame .rf-row:nth-child(4){width:60%;}
+  .render-frame .rf-btn{margin-top:10px; width:90px; height:22px; border-radius:6px; background:var(--cyan); opacity:0.85;}
+
+  /* sections shared */
+  section{padding:100px 0;}
+  .section-head{max-width:640px; margin-bottom:54px;}
+  .section-head .eyebrow{margin-bottom:18px;}
+  .section-head h2{font-size:clamp(1.9rem, 3vw, 2.6rem); font-weight:700;}
+  .section-head p{margin-top:14px; color:var(--text-dim); font-size:1.05rem;}
+
+  /* services */
+  .services-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:24px;}
+  .service-card{
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:32px; position:relative; overflow:hidden;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .service-card:hover{border-color:rgba(93,224,230,0.35); transform:translateY(-4px);}
+  .service-card .tag{
+    position:absolute; top:24px; right:24px;
+    font-family:'JetBrains Mono', monospace; font-size:0.7rem;
+    padding:4px 10px; border-radius:999px;
+  }
+  .tag.live{background:rgba(40,200,64,0.12); color:#5FE08A; border:1px solid rgba(95,224,138,0.3);}
+  .tag.soon{background:rgba(255,180,84,0.1); color:var(--amber); border:1px solid rgba(255,180,84,0.3);}
+  .service-icon{
+    width:48px; height:48px; border-radius:12px; margin-bottom:20px;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(93,224,230,0.08); border:1px solid rgba(93,224,230,0.2);
+  }
+  .service-card h3{font-size:1.3rem; margin-bottom:10px;}
+  .service-card p{color:var(--text-dim); font-size:0.96rem; margin-bottom:18px;}
+  .service-card ul{list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px;}
+  .service-card li{display:flex; align-items:baseline; gap:8px; font-size:0.9rem; color:var(--text);}
+  .service-card li::before{content:"—"; color:var(--cyan); font-family:'JetBrains Mono',monospace;}
+
+  /* what we build / capability strip */
+  .capabilities{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:18px;
+  }
+  .cap-tile{
+    background:var(--bg-soft); border:1px solid var(--line); border-radius:12px;
+    padding:22px; text-align:left;
+  }
+  .cap-tile .num{font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--text-dim);}
+  .cap-tile h4{font-family:'Space Grotesk', sans-serif; font-size:1.05rem; margin-top:10px; font-weight:600;}
+  .cap-tile p{font-size:0.86rem; color:var(--text-dim); margin-top:6px;}
+
+  /* process */
+  .process{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative;
+  }
+  .process::before{
+    content:""; position:absolute; top:22px; left:0; right:0; height:1px;
+    background:linear-gradient(90deg, transparent, var(--line) 8%, var(--line) 92%, transparent);
+  }
+  .process-step{padding-right:24px; position:relative;}
+  .process-step .step-dot{
+    width:44px; height:44px; border-radius:50%; background:var(--bg-soft);
+    border:1px solid var(--line); display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono',monospace; color:var(--cyan); font-size:0.85rem; margin-bottom:20px; z-index:1;
+  }
+  .process-step h4{font-size:1.05rem; font-weight:600; margin-bottom:8px;}
+  .process-step p{font-size:0.9rem; color:var(--text-dim);}
+
+  /* why us */
+  .why-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+  .why-card{padding:28px 0;}
+  .why-card h3{font-size:1.15rem; margin-bottom:10px; font-weight:600;}
+  .why-card p{color:var(--text-dim); font-size:0.95rem;}
+  .why-card .why-num{
+    font-family:'Space Grotesk',sans-serif; font-size:2rem; font-weight:700;
+    background:var(--grad); -webkit-background-clip:text; background-clip:text; color:transparent;
+    margin-bottom:12px;
+  }
+
+  /* CTA band */
+  .cta-band{
+    background:var(--panel); border:1px solid var(--line); border-radius:24px;
+    padding:64px; text-align:center; position:relative; overflow:hidden;
+  }
+  .cta-band::before{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(circle at 50% 0%, rgba(139,124,246,0.16), transparent 60%);
+  }
+  .cta-band h2{font-size:clamp(1.8rem,3.2vw,2.6rem); margin-bottom:14px; position:relative;}
+  .cta-band p{color:var(--text-dim); font-size:1.05rem; max-width:520px; margin:0 auto 32px; position:relative;}
+  .cta-band .hero-ctas{justify-content:center; position:relative;}
+
+  footer{border-top:1px solid var(--line); padding:48px 0; margin-top:40px;}
+  .footer-grid{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;}
+  .footer-grid .logo{font-size:1.05rem;}
+  footer .fmail{color:var(--text-dim); font-family:'JetBrains Mono', monospace; font-size:0.88rem;}
+  footer .fmail:hover{color:var(--cyan);}
+  .foot-note{color:var(--text-dim); font-size:0.8rem; margin-top:18px; text-align:center;}
+
+  /* reveal on scroll */
+  .reveal{opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease;}
+  .reveal.in{opacity:1; transform:translateY(0);}
+
+  @media (max-width:980px){
+    .hero{grid-template-columns:1fr; padding-top:50px;}
+    .services-grid{grid-template-columns:1fr;}
+    .capabilities{grid-template-columns:repeat(2,1fr);}
+    .process{grid-template-columns:repeat(2,1fr); gap:36px;}
+    .process::before{display:none;}
+    .why-grid{grid-template-columns:1fr;}
+    .navlinks{display:none;}
+    .cta-band{padding:40px 24px;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  /* contact modal */
+  .modal-overlay{
+    position:fixed; inset:0; z-index:200;
+    background:rgba(6,9,15,0.72); backdrop-filter:blur(4px);
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    opacity:0; pointer-events:none;
+    transition:opacity .2s ease;
+  }
+  .modal-overlay.show{opacity:1; pointer-events:auto;}
+  .modal-card{
+    width:100%; max-width:460px;
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius);
+    padding:32px; position:relative;
+    box-shadow:0 30px 80px -20px rgba(0,0,0,0.6);
+    transform:translateY(12px); transition:transform .2s ease;
+  }
+  .modal-overlay.show .modal-card{transform:translateY(0);}
+  .modal-close{
+    position:absolute; top:16px; right:16px;
+    width:32px; height:32px; border-radius:8px;
+    background:none; border:1px solid var(--line); color:var(--text-dim);
+    display:flex; align-items:center; justify-content:center; font-size:1.1rem;
+  }
+  .modal-close:hover{color:var(--text); border-color:var(--cyan);}
+  .modal-card h3{font-size:1.4rem; margin-bottom:8px;}
+  .modal-card p.modal-sub{color:var(--text-dim); font-size:0.92rem; margin-bottom:24px;}
+  .field{margin-bottom:16px;}
+  .field label{display:block; font-size:0.82rem; color:var(--text-dim); margin-bottom:6px; font-family:'JetBrains Mono',monospace;}
+  .field input, .field textarea{
+    width:100%; background:var(--bg-soft); border:1px solid var(--line); border-radius:8px;
+    padding:11px 13px; color:var(--text); font-family:'Inter',sans-serif; font-size:0.95rem;
+  }
+  .field input:focus, .field textarea:focus{outline:none; border-color:var(--cyan);}
+  .field textarea{resize:vertical; min-height:90px;}
+  .modal-card .btn-primary{width:100%; justify-content:center; border:none;}
+  .modal-note{font-size:0.78rem; color:var(--text-dim); margin-top:14px; text-align:center;}
+</style>
+</head>
+<body>
+
+<div class="bg-glow"><div class="grid-lines"></div></div>
+
+<header>
+  <nav>
+    <div class="logo"><span class="logo-mark">PQ</span>ProQuick</div>
+    <button class="nav-cta" onclick="openModal()">Book a meeting</button>
+  </nav>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <div>
+      <div class="eyebrow"><span class="dot"></span>WEBSITES NOW · AI CHATBOTS COMING SOON</div>
+      <h1>We turn "we need a website"<br>into a <span class="gradient-text">site that's live this month.</span></h1>
+      <p class="sub">ProQuick designs and builds fast, clean, modern websites for small businesses and founders — no bloated agency process, no six-month timelines. Just a site that works, and works for you.</p>
+      <div class="hero-ctas">
+        <button class="btn-primary" onclick="openModal()">Get a free consult →</button>
+        <button class="btn-secondary" onclick="scrollToSection('services')">See what we build</button>
+      </div>
+      <div class="hero-meta">
+        <div><strong>1–3 wks</strong>typical turnaround</div>
+        <div><strong>2</strong>person studio, full attention</div>
+        <div><strong>100%</strong>custom-built, no templates</div>
+      </div>
+    </div>
+
+    <div class="terminal reveal">
+      <div class="term-bar">
+        <span class="term-dot"></span><span class="term-dot"></span><span class="term-dot"></span>
+        <span class="term-title">build.sh — proquick</span>
+      </div>
+      <div class="term-body" id="termBody"></div>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span>WHAT WE OFFER</div>
+        <h2>Two services. One studio that actually answers your emails.</h2>
+        <p>We're starting focused — great websites, done right — with AI-powered chat support rolling out for clients soon after.</p>
+      </div>
+
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <span class="tag live">Available now</span>
+          <div class="service-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="#5DE0E6" stroke-width="1.6"/><path d="M3 8h18" stroke="#5DE0E6" stroke-width="1.6"/><circle cx="6" cy="6" r="0.6" fill="#5DE0E6"/></svg>
+          </div>
+          <h3>Custom website design &amp; build</h3>
+          <p>A site built around your business, not a drag-and-drop template stretched to fit. Fast to load, easy to update, built to convert visitors into customers.</p>
+          <ul>
+            <li>Landing pages, portfolios &amp; business sites</li>
+            <li>Mobile-first, fast-loading builds</li>
+            <li>Booking forms, contact flows &amp; integrations</li>
+            <li>Basic SEO setup so you're findable</li>
+          </ul>
+        </div>
+
+        <div class="service-card reveal">
+          <span class="tag soon">Coming soon</span>
+          <div class="service-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 3a7 7 0 0 1 7 7c0 3.5-3 5-3 8H8c0-3-3-4.5-3-8a7 7 0 0 1 7-7Z" stroke="#8B7CF6" stroke-width="1.6"/><path d="M9 21h6" stroke="#8B7CF6" stroke-width="1.6"/></svg>
+          </div>
+          <h3>AI chatbots for your site</h3>
+          <p>A trained assistant that answers customer questions, books calls, and qualifies leads on your site — 24/7, without you lifting a finger.</p>
+          <ul>
+            <li>Trained on your business &amp; FAQs</li>
+            <li>Lead capture &amp; meeting booking</li>
+            <li>Plugs into your existing website</li>
+            <li>Early access for current website clients</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span>BUILT FOR</div>
+        <h2>If your business needs to look credible online, we can build it.</h2>
+      </div>
+      <div class="capabilities">
+        <div class="cap-tile reveal"><span class="num mono">01</span><h4>Local services</h4><p>Salons, clinics, contractors, consultants — sites that book appointments.</p></div>
+        <div class="cap-tile reveal"><span class="num mono">02</span><h4>Personal brands</h4><p>Portfolios, coaches, creators who need to look as good as their work.</p></div>
+        <div class="cap-tile reveal"><span class="num mono">03</span><h4>Small e-commerce</h4><p>Product showcases and simple storefronts that don't need a full platform.</p></div>
+        <div class="cap-tile reveal"><span class="num mono">04</span><h4>Startups &amp; founders</h4><p>A landing page that makes you look real before you're ready to scale.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="process">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span>HOW IT WORKS</div>
+        <h2>From "let's talk" to live, in four steps.</h2>
+      </div>
+      <div class="process">
+        <div class="process-step reveal">
+          <div class="step-dot">01</div>
+          <h4>Free consult</h4>
+          <p>A quick call to understand your business and what the site needs to do for you.</p>
+        </div>
+        <div class="process-step reveal">
+          <div class="step-dot">02</div>
+          <h4>Design draft</h4>
+          <p>We design a first version around your brand — you see it before anything is built.</p>
+        </div>
+        <div class="process-step reveal">
+          <div class="step-dot">03</div>
+          <h4>Build &amp; review</h4>
+          <p>We build it out, you review and request changes — fast feedback loops, no waiting weeks.</p>
+        </div>
+        <div class="process-step reveal">
+          <div class="step-dot">04</div>
+          <h4>Launch &amp; support</h4>
+          <p>Your site goes live. We stick around for tweaks, and you're first in line for chatbot access.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="why">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow"><span class="dot"></span>WHY PROQUICK</div>
+        <h2>Small by design. That's the advantage.</h2>
+      </div>
+      <div class="why-grid">
+        <div class="why-card reveal">
+          <div class="why-num">01</div>
+          <h3>Direct access, no account managers</h3>
+          <p>You talk to the people actually building your site — every time, not through layers of handoffs.</p>
+        </div>
+        <div class="why-card reveal">
+          <div class="why-num">02</div>
+          <h3>Built lean, priced fair</h3>
+          <p>No agency overhead baked into your invoice. You pay for the work, not the office.</p>
+        </div>
+        <div class="why-card reveal">
+          <div class="why-num">03</div>
+          <h3>Room to grow with you</h3>
+          <p>As we roll out AI chatbots, existing clients get first access — your site keeps getting smarter.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta-band reveal">
+        <h2>Got a business that needs a site?<br>Let's get it live this month.</h2>
+        <p>Tell us what you're working on — we'll reply with next steps and set up a time to talk.</p>
+        <div class="hero-ctas">
+          <button class="btn-primary" onclick="openModal()">Get in touch →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="logo"><span class="logo-mark">PQ</span>ProQuick</div>
+      <button class="fmail" onclick="openModal()" style="background:none;border:none;cursor:pointer;padding:0;">Aman.workuk2003@gmail.com</button>
+    </div>
+    <p class="foot-note">ProQuick — websites built fast, chatbots coming next.</p>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="contactModal">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
+    <h3>Let's talk about your site</h3>
+    <p class="modal-sub">Tell us a bit about your business — we'll get back to you to set up a call.</p>
+    <form id="contactForm">
+      <!-- Get a free access key at https://web3forms.com and paste it below -->
+      <input type="hidden" name="access_key" value="f59f01a5-1419-4500-b3be-6fbf0357a8b7">
+      <input type="hidden" name="subject" value="Let's build something — ProQuick">
+      <input type="hidden" name="from_name" value="ProQuick website">
+      <div class="field">
+        <label for="cf-name">NAME</label>
+        <input type="text" id="cf-name" name="name" required placeholder="Your name">
+      </div>
+      <div class="field">
+        <label for="cf-email">EMAIL</label>
+        <input type="email" id="cf-email" name="email" required placeholder="you@business.com">
+      </div>
+      <div class="field">
+        <label for="cf-message">WHAT DO YOU NEED?</label>
+        <textarea id="cf-message" name="message" placeholder="A new site, a redesign, a chatbot..."></textarea>
+      </div>
+      <button type="submit" class="btn-primary" id="cf-submit">Send message →</button>
+    </form>
+    <p class="modal-note" id="cf-status">We'll reply within 1 business day.</p>
+  </div>
+</div>
+
+<script>
+  // modal open/close
+  function openModal(){
+    document.getElementById('contactModal').classList.add('show');
+    document.body.style.overflow = 'hidden';
+    const status = document.getElementById('cf-status');
+    status.textContent = "We'll reply within 1 business day.";
+    status.style.color = '';
+  }
+  function closeModal(){
+    document.getElementById('contactModal').classList.remove('show');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('contactModal').addEventListener('click', function(e){
+    if(e.target === this) closeModal();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeModal();
+  });
+  document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const form = e.target;
+    const submitBtn = document.getElementById('cf-submit');
+    const status = document.getElementById('cf-status');
+    const formData = new FormData(form);
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    status.textContent = '';
+
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      if(data.success){
+        status.textContent = "Message sent — we'll be in touch soon.";
+        status.style.color = '#5FE08A';
+        form.reset();
+        setTimeout(closeModal, 1800);
+      } else {
+        status.textContent = 'Something went wrong. Please try again.';
+        status.style.color = '#FF5F57';
+      }
+    })
+    .catch(() => {
+      status.textContent = "Couldn't send — check your connection and try again.";
+      status.style.color = '#FF5F57';
+    })
+    .finally(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Send message →';
+    });
+  });
+
+  // email opener — works inside iframes and direct
+  function openMail(){
+    const subject = encodeURIComponent("Let's build something — ProQuick");
+    const body = encodeURIComponent("Hi ProQuick,\n\nI'd like to talk about:\n");
+    const mailto = "mailto:Aman.workuk2003@gmail.com?subject=" + subject + "&body=" + body;
+    // try window.top first to escape any iframe sandbox
+    try { window.top.location.href = mailto; } catch(e) { window.location.href = mailto; }
+  }
+
+  // smooth scroll — works inside iframes too
+  function scrollToSection(id){
+    const el = document.getElementById(id);
+    if(el){ el.scrollIntoView({behavior:'smooth', block:'start'}); }
+  }
+
+  // reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.15});
+  reveals.forEach(el=>io.observe(el));
+
+  // terminal typing animation
+  const lines = [
+    {html:'<span class="kw">const</span> client = <span class="fn">understand</span>(<span class="str">"your business"</span>);'},
+    {html:'<span class="kw">const</span> design = <span class="fn">draft</span>(client);'},
+    {html:'<span class="kw">await</span> <span class="fn">build</span>(design);'},
+    {html:'<span class="fn">deploy</span>(<span class="str">"live"</span>); <span class="mono" style="color:#5FE08A">✓ done</span>'}
+  ];
+  const termBody = document.getElementById('termBody');
+  let li = 0, ci = 0;
+
+  function typeLine(){
+    if(li >= lines.length){
+      const rf = document.createElement('div');
+      rf.className = 'render-frame';
+      rf.innerHTML = '<div class="rf-top"><span></span><span></span><span></span></div><div class="rf-hero"></div><div class="rf-row"></div><div class="rf-row"></div><div class="rf-row"></div><div class="rf-btn"></div>';
+      termBody.appendChild(rf);
+      requestAnimationFrame(()=> setTimeout(()=> rf.classList.add('show'), 50));
+      return;
+    }
+    const lineEl = document.createElement('div');
+    lineEl.className = 'term-line';
+    termBody.appendChild(lineEl);
+    const target = lines[li].html;
+    const tmp = document.createElement('div');
+    tmp.innerHTML = target;
+    const fullText = tmp.textContent;
+    let i = 0;
+    const speed = 22;
+    function step(){
+      i++;
+      // reveal proportionally using textContent length, but render final HTML once complete for color tags
+      if(i >= fullText.length){
+        lineEl.innerHTML = target + '<span class="caret"></span>';
+        const prevCaret = termBody.querySelectorAll('.caret');
+        if(prevCaret.length>1) prevCaret[0].remove();
+        li++;
+        setTimeout(typeLine, 260);
+        return;
+      }
+      lineEl.textContent = fullText.slice(0, i);
+      setTimeout(step, speed);
+    }
+    step();
+  }
+  setTimeout(typeLine, 500);
+</script>
+
+</body>
+</html>
